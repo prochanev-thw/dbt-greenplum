@@ -113,7 +113,7 @@ setup(
     },
     install_requires=[
         "dbt-core~={}".format(dbt_core_version),
-        _dbt_postgres_requirement(),
+        "dbt-postgres~={}".format(package_version),
         "{}~=2.9".format(DBT_PSYCOPG2_NAME),
     ],
     zip_safe=False,

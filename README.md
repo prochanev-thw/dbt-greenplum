@@ -1,14 +1,6 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/dbt-labs/dbt/ec7dee39f793aa4f7dd3dae37282cc87664813e4/etc/dbt-logo-full.svg" alt="dbt logo" width="500"/>
 </p>
-<p align="center">
-  <a href="https://github.com/dbt-labs/dbt-redshift/actions/workflows/main.yml">
-    <img src="https://github.com/dbt-labs/dbt-redshift/actions/workflows/main.yml/badge.svg?event=push" alt="Unit Tests Badge"/>
-  </a>
-  <a href="https://github.com/dbt-labs/dbt-redshift/actions/workflows/integration.yml">
-    <img src="https://github.com/dbt-labs/dbt-redshift/actions/workflows/integration.yml/badge.svg?event=push" alt="Integration Tests Badge"/>
-  </a>
-</p>
 
 **[dbt](https://www.getdbt.com/)** enables data analysts and engineers to transform their data using the same practices that software engineers use to build applications.
 
@@ -22,22 +14,6 @@ The `dbt-greenplum` package contains the code enabling dbt to work with Greenplu
 
 Easiest way to start use dbt-greenplum is to install it using pip
 `pip install dbt-greenplum==<version>`
-
-The bleeding-edge version that targets `dbt-core` 1.10 can also be installed straight from the
-[prochanev-thw/dbt-greenplum](https://github.com/prochanev-thw/dbt-greenplum/tree/develop) fork:
-
-```bash
-pip install "git+https://github.com/prochanev-thw/dbt-greenplum.git@develop#egg=dbt-greenplum"
-```
-
-> **Note**
-> Until `dbt-postgres` publishes binaries compatible with dbt-core 1.10 to PyPI, set the
-> `DBT_GREENPLUM_PG_PACKAGE` environment variable before installation to point at the
-> appropriate Git reference of the upstream adapter, for example:
-> ```bash
-> export DBT_GREENPLUM_PG_PACKAGE="dbt-postgres @ git+https://github.com/dbt-labs/dbt-adapters.git@main#subdirectory=dbt-postgres"
-> pip install "git+https://github.com/prochanev-thw/dbt-greenplum.git@develop#egg=dbt-greenplum"
-> ```
 
 Where `<version>` matches your installed `dbt-core` version (for example `1.10.x`).
 
