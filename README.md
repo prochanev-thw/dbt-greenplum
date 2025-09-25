@@ -23,7 +23,7 @@ The `dbt-greenplum` package contains the code enabling dbt to work with Greenplu
 Easiest way to start use dbt-greenplum is to install it using pip
 `pip install dbt-greenplum==<version>`
 
-Where `<version>` is same as your dbt version
+Where `<version>` matches your installed `dbt-core` version (for example `1.10.x`).
 
 Available versions:
  - 0.19.2
@@ -31,6 +31,7 @@ Available versions:
  - 1.2.0
  - 1.4.0
  - 1.5.0
+ - 1.10.0
 
 ## Supported Features
 
