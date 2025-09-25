@@ -15,24 +15,9 @@ except ImportError:  # dbt-core >= 1.8
 from dbt.include import greenplum
 
 
-def _plugin_kwargs() -> Dict[str, Any]:
-    signature = inspect.signature(AdapterPlugin)
-    params = signature.parameters
-
-    kwargs: Dict[str, Any] = {
-        "adapter": GreenplumAdapter,
-        "credentials": GreenplumCredentials,
-        "include_path": greenplum.PACKAGE_PATH,
-        "dependencies": ["postgres"],
-    }
-
-    name_keys = ("name", "adapter_name", "adapter_type")
-    for key in name_keys:
-        if key in params:
-            kwargs[key] = "greenplum"
-            break
-
-    return kwargs
-
-
-Plugin = AdapterPlugin(**_plugin_kwargs())
+Plugin = AdapterPlugin(
+    adapter=GreenplumAdapter,
+    credentials=GreenplumCredentials,
+    include_path=greenplum.PACKAGE_PATH,
+    dependencies=["postgres"],
+)

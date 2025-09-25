@@ -79,6 +79,20 @@ description = """The greenplum adapter plugin for dbt (data build tool)"""
 
 DBT_PSYCOPG2_NAME = _dbt_psycopg2_name()
 
+
+def _dbt_postgres_requirement():
+    override = os.getenv("DBT_GREENPLUM_PG_PACKAGE", "").strip()
+    if override:
+        return override
+
+    parts = _get_plugin_version_dict()
+    major = int(parts["major"])
+    minor = int(parts["minor"])
+    lower_minor = minor - 1 if minor > 0 else 0
+    lower_bound = f"{major}.{lower_minor}.0"
+    upper_bound = f"{major}.{minor + 1}.0"
+    return f"dbt-postgres>={lower_bound},<{upper_bound}"
+
 setup(
     name=package_name,
     version=package_version,
