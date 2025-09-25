@@ -4,9 +4,9 @@ import os
 import re
 import sys
 
-if sys.version_info < (3, 7):
+if sys.version_info < (3, 9):
     print("Error: dbt does not support this version of Python.")
-    print("Please upgrade to Python 3.7 or higher.")
+    print("Please upgrade to Python 3.9 or higher.")
     sys.exit(1)
 
 
@@ -79,6 +79,20 @@ description = """The greenplum adapter plugin for dbt (data build tool)"""
 
 DBT_PSYCOPG2_NAME = _dbt_psycopg2_name()
 
+
+def _dbt_postgres_requirement():
+    override = os.getenv("DBT_GREENPLUM_PG_PACKAGE", "").strip()
+    if override:
+        return override
+
+    parts = _get_plugin_version_dict()
+    major = int(parts["major"])
+    minor = int(parts["minor"])
+    lower_minor = minor - 1 if minor > 0 else 0
+    lower_bound = f"{major}.{lower_minor}.0"
+    upper_bound = f"{major}.{minor + 1}.0"
+    return f"dbt-postgres>={lower_bound},<{upper_bound}"
+
 setup(
     name=package_name,
     version=package_version,
@@ -99,8 +113,8 @@ setup(
     },
     install_requires=[
         "dbt-core~={}".format(dbt_core_version),
-        "dbt-postgres~={}".format(package_version),
-        "{}~=2.8".format(DBT_PSYCOPG2_NAME),
+        _dbt_postgres_requirement(),
+        "{}~=2.9".format(DBT_PSYCOPG2_NAME),
     ],
     zip_safe=False,
     classifiers=[
@@ -109,12 +123,11 @@ setup(
         "Operating System :: Microsoft :: Windows",
         "Operating System :: MacOS :: MacOS X",
         "Operating System :: POSIX :: Linux",
-        "Programming Language :: Python :: 3.7",
-        "Programming Language :: Python :: 3.8",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
+        "Programming Language :: Python :: 3.12",
     ],
-    python_requires=">=3.7",
+    python_requires=">=3.9",
 )
 
