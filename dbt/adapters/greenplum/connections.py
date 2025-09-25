@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import ClassVar
 
-from dbt.events import AdapterLogger
+from dbt.adapters.events.logging import AdapterLogger
 from dbt.adapters.postgres.connections import (
     PostgresConnectionManager,
     PostgresCredentials,
