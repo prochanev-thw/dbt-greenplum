@@ -1,0 +1,20 @@
+{% macro greenplum__get_empty_subquery_sql(select_sql, select_sql_header=none) %}
+
+    {%- if var('required_limit_alias', none) -%}
+        {% set limit_alias = "as __dbt_sbq" %}
+    {%- else -%}
+        {% set limit_alias = "" %}
+    {%- endif -%}
+
+    {{ log("Limit alias: " ~ limit_alias, true) }}
+
+    {%- if select_sql_header is not none -%}
+    {{ select_sql_header }}
+    {%- endif -%}
+    select * from (
+        {{ select_sql }}
+    ) {{ limit_alias }}
+    where false
+    limit 0
+
+{% endmacro %}
