@@ -23,6 +23,13 @@
   {%- set partition_every = config.get('partition_every', none) -%}
   {%- set partition_values = config.get('partition_values', none) -%}
 
+  {%- set add_partition_schema = config.get('prt_schema', none) -%}
+  {%- set add_partition_source = config.get('prt_src', none) -%}
+  {%- set add_partition_target = config.get('prt_tgt', none) -%}
+  {%- set add_partition_column = config.get('prt_col', none) -%}
+
+  {%- set is_yezzey = config.get('is_yezzey', default=false) -%}
+
   {%- set is_partition = raw_partition is not none or partition_type is not none -%}
 
   {{ sql_header if sql_header is not none }}
@@ -39,6 +46,14 @@
                   default_partition_name, partition_start, partition_end,
                   partition_every, partition_values) }}
     ;
+
+    {% if add_partition_schema and add_partition_source and add_partition_target and add_partition_column %}
+    {# ADDING PARTITIONS #}
+    select dds.add_partitions({{ add_partition_schema }}, {{ add_partition_source }},
+        {{ add_partition_schema }}, {{ add_partition_target }}, {{ add_partition_column }}
+        );
+    {% endif %}
+
 
     {# INSERTING DATA #}
     insert into {{ relation }} (
@@ -58,6 +73,17 @@
       )
       {{ distribution(distributed_by, distributed_replicated) }}
       ;
+      
+      {% if add_partition_schema and add_partition_source and add_partition_target and add_partition_column %}
+      {# ADDING PARTITIONS #}
+      select dds.add_partitions({{ add_partition_schema }}, {{ add_partition_source }},
+          {{ add_partition_schema }}, {{ add_partition_target }}, {{ add_partition_column }}
+          );
+      {% endif %}
+  {% endif %}
+
+  {% if is_yezzey and not temporary %}
+  select yezzey_define_offload_policy('{{relation.schema}}','{{relation.table}}','remote_always')
   {% endif %}
 
   {% set contract_config = config.get('contract') %}
